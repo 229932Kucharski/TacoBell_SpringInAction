@@ -9,6 +9,10 @@
 
 <body>
 
+<form method="POST" th:action="@{/logout}" id="logoutForm">
+    <input type="submit" value="Logout"/>
+</form>
+
 <form method="POST" th:action="@{/orders}" th:object="${order}">
     <h1>Order your taco creations!</h1>
 
@@ -98,6 +102,8 @@
     <br/>
 
     <input type="submit" value="Złóż zamówienie"/>
+
+
 </form>
 
 </body>
