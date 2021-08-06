@@ -3,19 +3,31 @@ package pl.study.TacoBell;
 import lombok.Data;
 import org.hibernate.validator.constraints.CreditCardNumber;
 
+import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Data
-public class Order {
+@Entity
+@Table(name="Taco_Order")
+public class Order implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
+
     private Date placedAt;
+
+    @ManyToMany(targetEntity=Taco.class)
     private List<Taco> tacos = new ArrayList<>();
+
+    @ManyToOne
+    private User user;
 
     @NotBlank(message = "Podanie imienia i nazwiska jest obowiązkowe")
     private String name;
@@ -37,6 +49,11 @@ public class Order {
 
     public void addDesign(Taco design) {
         this.tacos.add(design);
+    }
+
+    @PrePersist
+    void placedAt() {
+        this.placedAt = new Date();
     }
 
 }
